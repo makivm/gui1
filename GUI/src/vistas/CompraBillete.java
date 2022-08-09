@@ -6,8 +6,12 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import modelo.Billete;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JSpinner;
@@ -143,6 +147,11 @@ public class CompraBillete extends JFrame {
 		contentPane.add(panel, "cell 1 8 3 1,grow");
 		
 		btnComprar = new JButton("Comprar");
+		btnComprar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				procesar();
+			}
+		});
 		panel.add(btnComprar);
 		btnComprar.setFont(new Font("Verdana", Font.PLAIN, 14));
 		
@@ -167,6 +176,24 @@ public class CompraBillete extends JFrame {
 		//rdbIda.setSelected(true); LO USARIAMOS SI EN LA CONFIGURACION INICIAL HUBIERAS PUESTO COMO SELECTED "IDA"
 		//rdbIdayVuelta.setSelected(true);LO USARIAMOS SI EN LA CONFIGURACION INICIAL HUBIERAS PUESTO COMO SELECTED "IDA Y VUELTA"
 		grupoTipo.clearSelection();//Usamos este puesto que no habiamos puesto ninguna opcion como preseleccionada
+	}
+	
+
+	private void procesar() {
+		String nombre=txtNombre.getText();
+		String apellidos=txtApellidos.getText();
+		String dni=txtDni.getText();
+		if (nombre==null || nombre.isBlank() || apellidos==null || apellidos.isBlank() || dni==null || dni.isBlank()) {
+			JOptionPane.showMessageDialog(this,"Los campos nombre,apellidos y dni son obligatorios.","Datos incompletos",JOptionPane.INFORMATION_MESSAGE);
+		}
+		int edad= (int) spinnerEdad.getValue();
+		int numPasajeros= (int) spinnerNumPasajeros.getValue();
+		int modalidad= comboBillete.getSelectedIndex()+1;
+		boolean idayVuelta=rdbIdayVuelta.isSelected();
+		Billete b=new Billete(nombre,apellidos,edad,modalidad,dni,numPasajeros,idayVuelta);
+		
+		JOptionPane.showMessageDialog(this,"El importe total del billete es: "+b.getImporteTotal(),"Importe Total",JOptionPane.INFORMATION_MESSAGE);
+		
 	}
 
 }
